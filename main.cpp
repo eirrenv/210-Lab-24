@@ -1,17 +1,18 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <list>
+// #include <list>
+#include <set>
 #include <random> // for random selection :)
 #include "Goat.h"
 using namespace std;
 
 const int SZ_NAMES = 200, SZ_COLORS = 25, MAX_AGE = 20;
 
-int select_goat(list<Goat> trip);
-void delete_goat(list<Goat> &trip);
-void add_goat(list<Goat> &trip, string nm[], string clr[]);
-void display_trip(list<Goat> trip);
+int select_goat(set<Goat> trip);
+void delete_goat(set<Goat> &trip);
+void add_goat(set<Goat> &trip, string nm[], string clr[]);
+void display_trip(set<Goat> trip);
 int main_menu();
 
 int main() {
@@ -20,7 +21,7 @@ int main() {
     int choice;
 
     // create Goat list containing goats
-    list<Goat> goatList;
+    set<Goat> goatSet;
 
     // read & populate arrays for names and colors
     ifstream fin("names.txt");
@@ -37,13 +38,13 @@ int main() {
     while (again) {
         choice = main_menu();
         if ( choice == 1 ) {
-            add_goat(goatList, names, colors);
+            add_goat(goatSet, names, colors);
         }
         else if ( choice == 2 ) {
-            delete_goat(goatList);
+            delete_goat(goatSet);
         }
         else if ( choice == 3 ) {
-            display_trip(goatList);
+            display_trip(goatSet);
         }
         else {
             again = false;
@@ -73,7 +74,7 @@ int main_menu() {
     }
 }
 
-int select_goat(list<Goat> trip) {
+int select_goat(set<Goat> trip) {
     int choice;
     bool again = true;
     while (again) {
@@ -89,7 +90,7 @@ int select_goat(list<Goat> trip) {
     }
 }
 
-void delete_goat(list<Goat> &trip) {
+void delete_goat(set<Goat> &trip) {
     // added catch for an empty list
     if (trip.size() == 0) {
         cout << "List is empty, cannot delete any goats" << endl;
@@ -104,15 +105,15 @@ void delete_goat(list<Goat> &trip) {
     
 }
 
-void add_goat(list<Goat> &trip, string nm[], string clr[]) {
+void add_goat(set<Goat> &trip, string nm[], string clr[]) {
     string name = nm[rand() % SZ_NAMES];
     int age = rand() % MAX_AGE + 1;
     string color = clr[rand() % SZ_COLORS];
     Goat tmpGoat(name, age, color);
-    trip.push_back(tmpGoat);
+    trip.insert(tmpGoat);
 }
 
-void display_trip(list<Goat> trip) {
+void display_trip(set<Goat> trip) {
     // catch for empty list
     if (trip.size() == 0) {
         cout << "List is empty." << endl;
